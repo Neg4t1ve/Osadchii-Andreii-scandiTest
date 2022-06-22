@@ -1,0 +1,26 @@
+@use "../../assets/scss/mixins" as *;
+@use "../../assets/scss/variables" as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  text-align: start;
+  @include font($Raleway, 400);
+  font-size: 2.625rem;
+  line-height: 4.2rem;
+  &::first-letter {
+    text-transform: capitalize;
+  }
+}
+
+.grid {
+  margin: 0 auto;
+  margin-top: 6.25rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 2.5rem;
+  row-gap: 6.25rem;
+}
