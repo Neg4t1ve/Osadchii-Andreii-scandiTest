@@ -2,6 +2,10 @@
 @use "../../assets/scss/variables" as *;
 
 header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: #fff;
   .container {
     line-height: 1.2rem;
     text-align: center;
@@ -9,7 +13,7 @@ header {
     flex-direction: row;
     justify-content: space-between;
     padding-top: 1.5rem;
-    position: sticky;
+
     @include font($Raleway, 400);
     color: $color-text;
     max-width: 77.5rem;
