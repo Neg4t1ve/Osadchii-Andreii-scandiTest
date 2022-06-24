@@ -1,7 +1,7 @@
 @use "../../assets/scss/mixins" as *;
 @use "../../assets/scss/variables" as *;
 
-.wrapper {
+.main {
   @include font($Raleway, 400);
   color: $color-text;
   max-width: 77.5rem;
