@@ -25,11 +25,19 @@ header {
   }
   .Category {
     padding: 4px 16px 32px;
+    @include font($Raleway, 400);
+    background: transparent;
+    font-size: inherit;
+    text-transform: uppercase;
+    cursor: pointer;
     &_primary {
       @extend .Category;
       border-bottom: $color-primary solid 2px;
       color: $color-primary;
       font-weight: 600;
+    }
+    &:hover {
+      background-color: #eee;
     }
   }
   .actions {
