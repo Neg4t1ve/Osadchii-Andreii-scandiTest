@@ -29,15 +29,22 @@ header {
     background: transparent;
     font-size: inherit;
     text-transform: uppercase;
+    color: $color-text;
     cursor: pointer;
     &_primary {
       @extend .Category;
       border-bottom: $color-primary solid 2px;
       color: $color-primary;
       font-weight: 600;
+      &:visited {
+        color: $color-primary;
+      }
     }
     &:hover {
       background-color: #eee;
+    }
+    &:visited {
+      @extend .Category;
     }
   }
   .actions {

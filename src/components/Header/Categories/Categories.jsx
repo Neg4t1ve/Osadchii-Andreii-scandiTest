@@ -3,8 +3,15 @@ import { NavLink } from "react-router-dom";
 import styles from "../header.module.scss";
 import { client } from "api/client";
 import { GET_ALL_CATEGORIES } from "api/queries/GET__ALL_CATEGORIES";
+import { setCategory } from "app/Slices/categoriesSlice";
+import { connect } from "react-redux";
 
-export default class Categories extends Component {
+// достаем метод для установки категории
+const mapDispatchToProps = (dispatch) => ({
+  setActiveCategory: (state) => dispatch(setCategory(state)),
+});
+
+class Categories extends Component {
   constructor(props) {
     super(props);
 
@@ -31,6 +38,7 @@ export default class Categories extends Component {
 
   setCategory(e) {
     this.setState({ category: e.target.textContent });
+    this.props.setActiveCategory(e.target.textContent);
   }
 
   render() {
@@ -41,7 +49,7 @@ export default class Categories extends Component {
             return (
               <NavLink
                 key={category.name}
-                to={`category/${category.name}`}
+                to={`${category.name}`}
                 className={
                   this.state.category === category.name
                     ? styles.Category_primary
@@ -57,3 +65,5 @@ export default class Categories extends Component {
     );
   }
 }
+
+export default connect(null, mapDispatchToProps)(Categories);
