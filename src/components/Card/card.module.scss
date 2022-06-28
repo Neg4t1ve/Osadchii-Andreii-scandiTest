@@ -9,6 +9,50 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 1.5rem;
+  background: transparent;
+  color: $color-text;
+  position: relative;
+
+  &:visited {
+    @extend .container;
+  }
+  .addtocart {
+    position: absolute;
+    right: 2rem;
+    bottom: 4.5rem;
+    background: transparent;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  &:hover {
+    .addtocart {
+      opacity: 1;
+      transition: opacity 0.3s ease;
+      cursor: pointer;
+    }
+  }
+
+  &OutOfStock {
+    @extend .container;
+    position: relative;
+    opacity: 0.5;
+    cursor: default;
+    &::after {
+      content: "OUT OF STOCK";
+      position: absolute;
+      @include font($Raleway, 400);
+      font-size: 1.5rem;
+      color: $color-text;
+      top: 40%;
+      left: 25%;
+    }
+    * {
+      opacity: 0.5;
+    }
+    .addtocart {
+      display: none;
+    }
+  }
 }
 
 .imgContainer {
