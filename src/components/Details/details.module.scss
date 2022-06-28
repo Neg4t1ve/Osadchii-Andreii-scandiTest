@@ -65,6 +65,18 @@
       }
       .description {
         margin-top: 2.5rem;
+        @include font($Roboto, 400);
+        font-size: 1rem;
+        line-height: 1.625rem;
+      }
+      .button {
+        background-color: $color-primary;
+        @include font($Raleway, 600);
+        font-size: 1rem;
+        line-height: 1.2rem;
+        color: #fff;
+        padding: 1rem 5.8438rem;
+        cursor: pointer;
       }
     }
   }
