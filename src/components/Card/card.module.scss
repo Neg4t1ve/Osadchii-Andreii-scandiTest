@@ -37,6 +37,7 @@
     position: relative;
     opacity: 0.5;
     cursor: default;
+    pointer-events: none;
     &::after {
       content: "OUT OF STOCK";
       position: absolute;
