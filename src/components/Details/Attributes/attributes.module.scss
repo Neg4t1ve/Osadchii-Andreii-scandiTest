@@ -1,0 +1,50 @@
+@use "../../../assets/scss/mixins" as *;
+@use "../../../assets/scss/variables" as *;
+
+.attributesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2.25rem;
+  .attribute {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    .attributeName {
+      @include font($RobotoCond, 700);
+      font-size: 1.125rem;
+      text-transform: uppercase;
+    }
+
+    .btnContainer {
+      display: flex;
+      gap: 0.75rem;
+      button {
+        cursor: pointer;
+      }
+      .button {
+        padding: 0.875rem 1.75rem;
+        background-color: #fff;
+        border: $color-text solid 1px;
+        @include font($Sans, 400);
+        font-size: 1rem;
+        line-height: 1.125rem;
+        text-transform: uppercase;
+        &Active {
+          @extend .button;
+          background-color: $color-text;
+          color: #fff;
+        }
+      }
+
+      .swatch {
+        padding: 1px;
+        background-color: transparent;
+        &Active {
+          @extend .swatch;
+          border: $color-primary solid 1px;
+        }
+      }
+    }
+  }
+}
