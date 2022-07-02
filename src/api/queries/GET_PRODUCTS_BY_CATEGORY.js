@@ -11,6 +11,9 @@ export const GET_PRODUCTS_BY_CATEGORY = gql`
         gallery
         prices {
           amount
+          currency {
+            symbol
+          }
         }
       }
     }

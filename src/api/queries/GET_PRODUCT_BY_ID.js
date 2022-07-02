@@ -9,7 +9,6 @@ export const GET_PRODUCT_BY_ID = gql`
       description
       prices {
         currency {
-          label
           symbol
         }
         amount
