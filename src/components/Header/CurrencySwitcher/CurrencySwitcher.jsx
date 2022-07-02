@@ -1,16 +1,27 @@
 import { client } from "api/client";
 import { GET_CURRENCIES } from "api/queries/GET_CURRENCIES";
+import { setCurrency } from "app/Slices/currencySlice";
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import arrow from "../../../assets/img/down-arrow.svg";
 import styles from "./currency.module.scss";
 
-export default class CurrencySwitcher extends Component {
+const mapStateToProps = (state) => ({
+  currency: state.currency.activeCurrency,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setCurrency: (state) => dispatch(setCurrency(state)),
+});
+
+class CurrencySwitcher extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       visibility: false,
       currencies: [],
+      activeCurrency: this.props.currency,
     };
 
     this.toggleSwitcherVisibility = this.toggleSwitcherVisibility.bind(this);
@@ -27,9 +38,10 @@ export default class CurrencySwitcher extends Component {
     }));
   }
 
-  currencySwitch() {
-    // some logics
+  currencySwitch(symbol) {
+    this.props.setCurrency(symbol);
     this.toggleSwitcherVisibility();
+    this.setState({ activeCurrency: symbol });
   }
 
   async fetchCurrencies() {
@@ -50,22 +62,28 @@ export default class CurrencySwitcher extends Component {
               : styles.currencySwitcher
           }
         >
-          <span>$</span> <img src={arrow} alt="arrow" />
+          <span>{this.state.activeCurrency}</span>{" "}
+          <img src={arrow} alt="arrow" />
         </button>
 
         <div className={styles.container}>
           {this.state.visibility &&
-            this.state.currencies.map((currency) => (
-              <button
-                key={currency.symbol}
-                onClick={this.currencySwitch}
-                className={styles.currency}
-              >
-                {currency.symbol}&nbsp;{currency.label}
-              </button>
-            ))}
+            this.state.currencies.map((item) => {
+              const symbol = item.symbol;
+              return (
+                <button
+                  key={item.symbol}
+                  onClick={() => this.currencySwitch(symbol)}
+                  className={styles.currency}
+                >
+                  {item.symbol}&nbsp;{item.label}
+                </button>
+              );
+            })}
         </div>
       </div>
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(CurrencySwitcher);

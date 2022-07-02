@@ -56,7 +56,9 @@ class Card extends Component {
           <h3 className={styles.title}>
             {this.props.brand}&nbsp;{this.props.name}
           </h3>
-          <p className={styles.price}>$&nbsp;{this.props.price}</p>
+          <p className={styles.price}>
+            {this.props.currency}&nbsp;{this.props.price}
+          </p>
         </div>
         <button onClick={this.handleClick} className={styles.addtocart}>
           <img src={AddToCart} alt="add-to-cart" />

@@ -8,6 +8,7 @@ import { GET_PRODUCTS_BY_CATEGORY } from "api/queries/GET_PRODUCTS_BY_CATEGORY";
 
 const mapStateToProps = (state) => ({
   category: state.category.activeCategory,
+  currency: state.currency.activeCurrency,
 });
 
 class ProductListingPage extends Component {
@@ -55,7 +56,13 @@ class ProductListingPage extends Component {
                 name={product.name}
                 brand={product.brand}
                 img={product.gallery[0]}
-                price={product.prices[0].amount}
+                price={product.prices.map((item) => {
+                  if (item.currency.symbol === this.props.currency) {
+                    return item.amount;
+                  }
+                  return null;
+                })}
+                currency={this.props.currency}
               />
             ))}
           </div>
