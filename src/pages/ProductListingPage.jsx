@@ -8,7 +8,7 @@ import { GET_PRODUCTS_BY_CATEGORY } from "api/queries/GET_PRODUCTS_BY_CATEGORY";
 
 const mapStateToProps = (state) => ({
   category: state.category.activeCategory,
-  currency: state.currency.activeCurrency,
+  currency: state.cart.activeCurrency,
 });
 
 class ProductListingPage extends Component {
@@ -48,23 +48,30 @@ class ProductListingPage extends Component {
         <div className={styles.container}>
           <h2 className={styles.title}>{this.props.category.toUpperCase()}</h2>
           <div className={styles.grid}>
-            {this.state.products.map((product) => (
-              <Card
-                id={product.id}
-                key={product.brand + product.name}
-                inStock={product.inStock}
-                name={product.name}
-                brand={product.brand}
-                img={product.gallery[0]}
-                price={product.prices.map((item) => {
-                  if (item.currency.symbol === this.props.currency) {
-                    return item.amount;
-                  }
-                  return null;
-                })}
-                currency={this.props.currency}
-              />
-            ))}
+            {this.state.products.map((product) => {
+              return (
+                <Card
+                  id={product.id}
+                  key={product.id}
+                  inStock={product.inStock}
+                  productName={product.name}
+                  brand={product.brand}
+                  gallery={product.gallery}
+                  price={product.prices
+                    .map((item) => {
+                      if (item.currency.symbol === this.props.currency) {
+                        return item.amount;
+                      }
+                      return null;
+                    })
+                    .filter((item) => !!item)
+                    .join("")}
+                  currency={this.props.currency}
+                  attributes={product.attributes}
+                  prices={product.prices}
+                />
+              );
+            })}
           </div>
         </div>
       </Main>
