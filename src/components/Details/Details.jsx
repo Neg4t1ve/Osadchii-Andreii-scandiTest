@@ -7,12 +7,17 @@ import { GET_PRODUCT_BY_ID } from "api/queries/GET_PRODUCT_BY_ID";
 import parse from "html-react-parser";
 import Attributes from "./Attributes/Attributes";
 import { connect } from "react-redux";
+import { addToCart } from "app/Slices/cartSlice";
 
 const mapStateToProps = (state) => ({
-  currency: state.currency.activeCurrency,
+  currency: state.cart.activeCurrency,
 });
 
-class Details extends Component {
+const mapDispatchToProps = (dispatch) => ({
+  addToCart: (state) => dispatch(addToCart(state)),
+});
+
+export class Details extends Component {
   constructor(props) {
     super(props);
 
@@ -23,8 +28,11 @@ class Details extends Component {
       gallery: [],
       description: "",
       prices: [],
+      attributes: [],
     };
     this.fetchProduct = this.fetchProduct.bind(this);
+    this.pickAttribute = this.pickAttribute.bind(this);
+    this.addToCart = this.addToCart.bind(this);
   }
   componentDidMount() {
     this.fetchProduct();
@@ -45,7 +53,34 @@ class Details extends Component {
       gallery: product.gallery,
       description: description,
       prices: product.prices,
+      attributes: product.attributes,
     });
+    // set default active attributes
+  }
+  pickAttribute(e) {
+    // pick active attribute and put it into state
+    const name = e.target.id;
+    this.setState({
+      active: {
+        ...this.state.active,
+        [name]: e.target.value,
+      },
+    });
+  }
+
+  addToCart() {
+    const product = {
+      productId: this.state.productID,
+      productName: this.state.productName,
+      brand: this.state.brand,
+      gallery: this.state.gallery,
+      prices: this.state.prices,
+      attributes: this.state.attributes,
+      activeAttr: this.state.active,
+      count: 1,
+    };
+
+    this.props.addToCart(product);
   }
 
   render() {
@@ -66,7 +101,12 @@ class Details extends Component {
               <h4 className={styles.productName}>{this.state.productName}</h4>
             </div>
 
-            <Attributes id={this.state.productID} />
+            <Attributes
+              id={this.state.productID}
+              attributes={this.state.attributes}
+              pickAttribute={this.pickAttribute}
+              activeAttr={this.state.active}
+            />
 
             <div className={styles.priceContainer}>
               <p className={styles.priceTitle}>PRICE:</p>
@@ -80,7 +120,10 @@ class Details extends Component {
                 })}
               </p>
             </div>
-            <Button style={styles.button}> Add to cart </Button>
+            <Button style={styles.button} handleClick={this.addToCart}>
+              {" "}
+              Add to cart{" "}
+            </Button>
             <div className={styles.description}>{this.state.description}</div>
           </div>
         </div>
@@ -89,4 +132,7 @@ class Details extends Component {
   }
 }
 
-export default connect(mapStateToProps)(withRouter(Details));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Details));
