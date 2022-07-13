@@ -1,5 +1,3 @@
-import { client } from "api/client";
-import { GET_ATTRIBUTES } from "api/queries/GET_ATTRIBUTES";
 import React, { Component } from "react";
 import styles from "./attributes.module.scss";
 
@@ -7,23 +5,9 @@ export default class Attributes extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      attributes: [],
-    };
+    this.state = {};
   }
 
-  componentDidMount() {
-    this.fetchAttributes();
-  }
-
-  async fetchAttributes() {
-    const result = await client.query({
-      query: GET_ATTRIBUTES,
-      variables: { id: this.props.id },
-    });
-    const attributes = result.data.product.attributes;
-    this.setState({ attributes: attributes });
-  }
   swatch(HEX) {
     return {
       backgroundColor: `${HEX}`,
@@ -35,8 +19,8 @@ export default class Attributes extends Component {
   render() {
     return (
       <div className={styles.attributesContainer}>
-        {this.state.attributes &&
-          this.state.attributes.map((attribute) => {
+        {this.props.attributes &&
+          this.props.attributes.map((attribute) => {
             return (
               <div className={styles.attribute} key={attribute.id}>
                 <h5 className={styles.attributeName}>{attribute.name}:</h5>
@@ -47,16 +31,21 @@ export default class Attributes extends Component {
                         <button
                           className={
                             attribute.type === "swatch"
-                              ? styles.swatch
+                              ? this.props.activeAttr?.[attribute.name] ===
+                                item.value
+                                ? styles.swatchActive
+                                : styles.swatch
+                              : this.props.activeAttr?.[attribute.name] ===
+                                item.value
+                              ? styles.buttonActive
                               : styles.button
                           }
                           key={item.id}
+                          id={attribute.name}
+                          value={item.value}
+                          onClick={this.props.pickAttribute}
                         >
-                          {attribute.type === "swatch" ? (
-                            <div style={this.swatch(item.value)} />
-                          ) : (
-                            item.value
-                          )}
+                          {item.value}
                         </button>
                       );
                     })}
