@@ -13,4 +13,25 @@
       transition: background-color 0.5s ease 0s;
     }
   }
+  .basketBackground {
+    background-color: rgba(57, 55, 72, 0.22);
+    position: absolute;
+    top: 2.5rem;
+    right: -20vw;
+    width: 200vw;
+    height: 100vh;
+    .basket {
+      border: $color-primary solid 1px;
+      background: #fff;
+      position: absolute;
+      width: 20rem;
+      top: 0;
+      right: 19vw;
+      height: 20rem;
+      overflow: auto;
+      .basketContainer {
+        margin: 2rem 1rem;
+      }
+    }
+  }
 }
