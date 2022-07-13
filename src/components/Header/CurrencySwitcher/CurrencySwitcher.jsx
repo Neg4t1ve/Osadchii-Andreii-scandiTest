@@ -1,13 +1,13 @@
 import { client } from "api/client";
 import { GET_CURRENCIES } from "api/queries/GET_CURRENCIES";
-import { setCurrency } from "app/Slices/currencySlice";
+import { setCurrency } from "app/Slices/cartSlice";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import arrow from "../../../assets/img/down-arrow.svg";
 import styles from "./currency.module.scss";
 
 const mapStateToProps = (state) => ({
-  currency: state.currency.activeCurrency,
+  currency: state.cart.activeCurrency,
 });
 
 const mapDispatchToProps = (dispatch) => ({
