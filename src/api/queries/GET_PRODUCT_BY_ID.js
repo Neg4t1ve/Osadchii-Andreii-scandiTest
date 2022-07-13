@@ -13,6 +13,16 @@ export const GET_PRODUCT_BY_ID = gql`
         }
         amount
       }
+      attributes {
+        id
+        name
+        type
+        items {
+          displayValue
+          value
+          id
+        }
+      }
     }
   }
 `;
