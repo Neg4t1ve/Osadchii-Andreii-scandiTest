@@ -33,10 +33,20 @@ class CurrencySwitcher extends Component {
   }
 
   toggleSwitcherVisibility() {
-    this.setState((state) => ({
-      visibility: !state.visibility,
+    if (!this.state.visibility) {
+      document.addEventListener("click", this.handleOutsideClick, false);
+    } else {
+      document.removeEventListener("click", this.handleOutsideClick, false);
+    }
+
+    this.setState((prevState) => ({
+      visibility: !prevState.visibility,
     }));
   }
+
+  handleOutsideClick = (e) => {
+    if (!this.node.contains(e.target)) this.toggleSwitcherVisibility();
+  };
 
   currencySwitch(symbol) {
     this.props.setCurrency(symbol);
@@ -53,7 +63,12 @@ class CurrencySwitcher extends Component {
 
   render() {
     return (
-      <div className={styles.CurrencySwitcherContainer}>
+      <div
+        className={styles.CurrencySwitcherContainer}
+        ref={(node) => {
+          this.node = node;
+        }}
+      >
         <button
           onClick={this.toggleSwitcherVisibility}
           className={
