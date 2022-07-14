@@ -5,9 +5,14 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import styles from "./card.module.scss";
 import AddToCart from "../../assets/img/AddToCart.svg";
+import { addToCart } from "app/Slices/cartSlice";
 
 const mapStateToProps = (state) => ({
   category: state.category.activeCategory,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  addToCart: (state) => dispatch(addToCart(state)),
 });
 
 class Card extends Component {
@@ -19,6 +24,7 @@ class Card extends Component {
     };
 
     this.fetchCategory = this.fetchCategory.bind(this);
+    this.addToCart = this.addToCart.bind(this);
   }
 
   componentDidMount() {
@@ -35,9 +41,20 @@ class Card extends Component {
     this.setState({ category: productCategory });
   }
 
-  handleClick(e) {
+  addToCart(e) {
     e.preventDefault();
-    alert("click");
+
+    const product = {
+      productId: this.props.id,
+      productName: this.props.productName,
+      brand: this.props.brand,
+      gallery: this.props.gallery,
+      prices: this.props.prices,
+      attributes: this.props.attributes,
+      count: 1,
+    };
+
+    this.props.addToCart(product);
   }
 
   render() {
@@ -50,17 +67,17 @@ class Card extends Component {
         onClick={this.props.inStock ? undefined : (e) => e.preventDefault()}
       >
         <div className={styles.imgContainer}>
-          <img src={this.props.img} alt={this.props.name} />
+          <img src={this.props.gallery[0]} alt={this.props.name} />
         </div>
         <div className={styles.textContainer}>
           <h3 className={styles.title}>
-            {this.props.brand}&nbsp;{this.props.name}
+            {this.props.brand}&nbsp;{this.props.productName}
           </h3>
           <p className={styles.price}>
             {this.props.currency}&nbsp;{this.props.price}
           </p>
         </div>
-        <button onClick={this.handleClick} className={styles.addtocart}>
+        <button onClick={this.addToCart} className={styles.addtocart}>
           <img src={AddToCart} alt="add-to-cart" />
         </button>
       </Link>
@@ -68,4 +85,4 @@ class Card extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Card);
+export default connect(mapStateToProps, mapDispatchToProps)(Card);
