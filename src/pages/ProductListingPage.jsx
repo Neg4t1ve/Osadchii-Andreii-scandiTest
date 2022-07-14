@@ -51,6 +51,7 @@ class ProductListingPage extends Component {
             {this.state.products.map((product) => {
               return (
                 <Card
+                  category={product.category}
                   id={product.id}
                   key={product.id}
                   inStock={product.inStock}
