@@ -38,8 +38,9 @@
       }
 
       .swatch {
-        padding: 1px;
+        padding: 0.25rem;
         background-color: transparent;
+        border: 1px solid rgba(207, 207, 207, 0.5);
         &Active {
           @extend .swatch;
           border: $color-primary solid 1px;

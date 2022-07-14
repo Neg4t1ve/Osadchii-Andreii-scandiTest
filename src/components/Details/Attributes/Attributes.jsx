@@ -9,11 +9,7 @@ export default class Attributes extends Component {
   }
 
   swatch(HEX) {
-    return {
-      backgroundColor: `${HEX}`,
-      height: "2rem",
-      width: "2rem",
-    };
+    return { backgroundColor: `${HEX}`, height: "2rem", width: "2rem" };
   }
 
   render() {
@@ -27,10 +23,11 @@ export default class Attributes extends Component {
                 <div className={styles.btnContainer}>
                   {attribute.items &&
                     attribute.items.map((item) => {
+                      const swatch = attribute.type === "swatch";
                       return (
                         <button
                           className={
-                            attribute.type === "swatch"
+                            swatch
                               ? this.props.activeAttr?.[attribute.name] ===
                                 item.value
                                 ? styles.swatchActive
@@ -44,8 +41,9 @@ export default class Attributes extends Component {
                           id={attribute.name}
                           value={item.value}
                           onClick={this.props.pickAttribute}
+                          style={swatch ? this.swatch(item.value) : null}
                         >
-                          {item.value}
+                          {swatch ? null : item.value}
                         </button>
                       );
                     })}
