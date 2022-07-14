@@ -1,3 +1,5 @@
+import { compareObjects } from "helpers/compareObjects";
+
 const { createSlice } = require("@reduxjs/toolkit");
 
 export const cartSlice = createSlice({
@@ -55,10 +57,47 @@ export const cartSlice = createSlice({
         });
 
         const product = { ...action.payload, activeAttr: attr };
+        // increase counter of product, if there was the same
+        if (
+          state.products
+            .map((item) => compareObjects(item.activeAttr, product.activeAttr))
+            .includes(true) &&
+          state.products.map((i) => i.id).includes(product.id)
+        ) {
+          const productIndex = state.products
+            .map((item) => compareObjects(item.activeAttr, product.activeAttr))
+            .findIndex((i) => i === true);
+          let count = state.products[productIndex].count;
+          count++;
+          state.products[productIndex].count = count;
+          return;
+        }
+
         state.products.push(product);
         return;
       }
 
+      // increase counter of product, if there was the same
+      if (
+        state.products
+          .map((item) =>
+            compareObjects(item.activeAttr, action.payload.activeAttr)
+          )
+          .includes(true) &&
+        state.products.map((i) => i.id).includes(action.payload.id)
+      ) {
+        const productIndex = state.products
+          .map((item) =>
+            compareObjects(item.activeAttr, action.payload.activeAttr)
+          )
+          .findIndex((i) => i === true);
+        let count = state.products[productIndex].count;
+        count++;
+        state.products[productIndex].count = count;
+        return;
+      }
+
+      // add new product to a cart, if
       state.products.push(action.payload);
     },
 
