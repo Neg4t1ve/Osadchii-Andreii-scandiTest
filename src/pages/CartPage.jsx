@@ -15,40 +15,9 @@ const mapStateToProps = (state) => ({
 });
 
 class CartPage extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      quantity: 0,
-      tax: 0,
-      total: 0,
-    };
-    this.calculatePrice = this.calculatePrice.bind(this);
+  handleOrder() {
+    alert("You ordered");
   }
-
-  componentDidMount() {
-    const quantity = this.props.products.reduce((prev, item) => {
-      return prev + item.count;
-    }, this.state.quantity);
-    this.setState({ quantity });
-  }
-
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.products !== this.props.products) {
-  //     this.calculatePrice();
-  //   }
-  // }
-
-  calculatePrice() {
-    const tax = 0;
-    const quantity = this.props.products.reduce((prev, item) => {
-      return prev + item.count;
-    }, this.state.quantity);
-    const total = 0;
-
-    this.setState({ tax, quantity, total });
-  }
-
   render() {
     return (
       <Main>
@@ -86,7 +55,9 @@ class CartPage extends Component {
               {this.props.total}
             </span>
           </div>
-          <Button />
+          <Button style={styles.button} handleClick={this.handleOrder}>
+            ORDER
+          </Button>
         </div>
       </Main>
     );
