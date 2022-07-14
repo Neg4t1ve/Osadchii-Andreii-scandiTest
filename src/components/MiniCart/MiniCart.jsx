@@ -8,6 +8,7 @@ import styles from "./minicart.module.scss";
 const mapStateToProps = (state) => ({
   cart: state.cart.products,
   currency: state.cart.activeCurrency,
+  quantity: state.cart.quantity,
 });
 
 class MiniCart extends Component {
@@ -21,14 +22,30 @@ class MiniCart extends Component {
   }
 
   toggleCartVisibility() {
-    this.setState((state) => ({
-      visibility: !state.visibility,
+    if (!this.state.visibility) {
+      document.addEventListener("click", this.handleOutsideClick, false);
+    } else {
+      document.removeEventListener("click", this.handleOutsideClick, false);
+    }
+
+    this.setState((prevState) => ({
+      visibility: !prevState.visibility,
     }));
   }
+  handleOutsideClick = (e) => {
+    if (!this.node.contains(e.target)) {
+      this.toggleCartVisibility();
+    }
+  };
 
   render() {
     return (
-      <div className={styles.miniCartContainer}>
+      <div
+        className={styles.miniCartContainer}
+        ref={(node) => {
+          this.node = node;
+        }}
+      >
         <button
           className={styles.miniCartSwitcher}
           onClick={this.toggleCartVisibility}
@@ -36,47 +53,62 @@ class MiniCart extends Component {
           <img src={cart} alt="minicart" />
         </button>
 
+        {this.props.quantity > 0 && (
+          <div className={styles.quantity}>{this.props.quantity}</div>
+        )}
         {this.state.visibility && (
-          <>
-            <div
-              className={styles.basketBackground}
-              onClick={this.toggleCartVisibility}
-            >
-              <div className={styles.basket}>
-                <div className={styles.basketContainer}>
-                  {this.props.cart &&
-                    this.props.cart.map((item) => {
-                      return (
-                        <Product
-                          productId={item.productId}
-                          key={item.productId + item.count}
-                          activeAttr={item.activeAttr}
-                          count={item.count}
-                          isFull={true}
-                          productName={item.productName}
-                          brand={item.brand}
-                          gallery={item.gallery}
-                          prices={item.prices}
-                          attributes={item.attributes}
-                        />
-                      );
-                    })}
-                  <Link onClick={this.toggleCartVisibility} to="/cart">
-                    CART
-                  </Link>
-                </div>
-              </div>
+          <div
+            className={styles.basketBackground}
+            onClick={this.toggleCartVisibility}
+          />
+        )}
+
+        {this.state.visibility > 0 && (
+          <div className={styles.basket}>
+            <div className={styles.basketContainer}>
+              {this.props.quantity === 0 && (
+                <p className={styles.placeholder}>Cart is empty</p>
+              )}
+              {this.props.cart &&
+                this.props.cart.map((item) => {
+                  return (
+                    <Product
+                      productId={item.productId}
+                      key={item.productId + item.count}
+                      activeAttr={item.activeAttr}
+                      count={item.count}
+                      isFull={false}
+                      productName={item.productName}
+                      brand={item.brand}
+                      gallery={item.gallery}
+                      prices={item.prices}
+                      attributes={item.attributes}
+                    />
+                  );
+                })}
             </div>
-          </>
+            <div className={styles.buttonsContainer}>
+              {" "}
+              <Link
+                onClick={this.toggleCartVisibility}
+                to="/cart"
+                className={styles.link}
+              >
+                VIEW BAG
+              </Link>
+              <Link
+                onClick={this.toggleCartVisibility}
+                to="/cart"
+                className={styles.button}
+              >
+                CHECK OUT
+              </Link>
+            </div>
+          </div>
         )}
       </div>
     );
   }
 }
-
-// {this.props.cart &&
-//   this.props.cart.map((item) => {
-//     return <Product productId={item} key={item} isFull={false} />;
-//   })}
 
 export default connect(mapStateToProps)(MiniCart);

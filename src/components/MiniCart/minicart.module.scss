@@ -13,25 +13,79 @@
       transition: background-color 0.5s ease 0s;
     }
   }
-  .basketBackground {
-    background-color: rgba(57, 55, 72, 0.22);
+
+  .quantity {
     position: absolute;
-    top: 2.5rem;
-    right: -20vw;
-    width: 200vw;
-    height: 100vh;
-    .basket {
-      border: $color-primary solid 1px;
-      background: #fff;
-      position: absolute;
-      width: 20rem;
-      top: 0;
-      right: 19vw;
-      height: 20rem;
-      overflow: auto;
-      .basketContainer {
-        margin: 2rem 1rem;
+    left: 75%;
+    bottom: 50%;
+    background-color: $color-text;
+    color: #fff;
+    @include font($Roboto, 700);
+    font-size: 0.875rem;
+    border-radius: 50%;
+    padding: 0.1rem;
+    padding-left: 0.15rem;
+    z-index: -1;
+    height: 20px;
+    width: 20px;
+  }
+
+  .basket {
+    background: #fff;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 21rem;
+    top: 169%;
+    right: -110%;
+    height: 42rem;
+    overflow: auto;
+    padding: 2rem 1rem;
+    .basketContainer {
+      display: flex;
+      flex-direction: column;
+      .placeholder {
+        margin: 14.5rem auto;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        opacity: 0.5;
+      }
+    }
+    &::-webkit-scrollbar {
+      width: 0;
+      opacity: 0;
+    }
+    .buttonsContainer {
+      display: flex;
+      flex-direction: row;
+      gap: 0.75rem;
+      .link {
+        @include font($Raleway, 600);
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        color: $color-text;
+        background-color: #fff;
+        border: $color-text solid 1px;
+        padding: 1rem 2rem;
+      }
+      .button {
+        @extend .link;
+        border: none;
+        background-color: $color-primary;
+        color: #fff;
+        padding: 1.0625rem 2.0625rem;
       }
     }
   }
+}
+
+.basketBackground {
+  background-color: rgba(57, 55, 72, 0.22);
+  position: absolute;
+  top: 2.5rem;
+  left: -100vw;
+  width: 200vw;
+  height: 100vh;
 }
