@@ -1,0 +1,53 @@
+@use "../../../assets/scss/mixins" as *;
+@use "../../../assets/scss/variables" as *;
+
+.attributesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  .attribute {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    .attributeName {
+      @include font($Raleway, 400);
+      font-size: 0.875rem;
+      text-transform: capitalize;
+    }
+
+    .btnContainer {
+      display: flex;
+      gap: 0.5rem;
+      button {
+        cursor: pointer;
+      }
+      .button {
+        // padding: 0 0.625rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        background-color: #fff;
+        border: $color-text solid 1px;
+        @include font($Sans, 400);
+        font-size: 0.875rem;
+        line-height: 1.4rem;
+        text-transform: uppercase;
+        &Active {
+          @extend .button;
+          background-color: $color-text;
+          color: #fff;
+        }
+      }
+
+      .swatch {
+        padding: 1px;
+        background-color: transparent;
+        border: 1px solid rgba(207, 207, 207, 0.5);
+        &Active {
+          @extend .swatch;
+          border: $color-primary solid 1px;
+        }
+      }
+    }
+  }
+}
