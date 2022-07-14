@@ -48,6 +48,7 @@ export class Details extends Component {
     const product = result.data.product;
     const description = parse(product.description);
     this.setState({
+      productID: product.id,
       productName: product.name,
       brand: product.brand,
       gallery: product.gallery,
