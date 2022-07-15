@@ -29,10 +29,12 @@ export class Details extends Component {
       description: "",
       prices: [],
       attributes: [],
+      activeImage: "",
     };
     this.fetchProduct = this.fetchProduct.bind(this);
     this.pickAttribute = this.pickAttribute.bind(this);
     this.addToCart = this.addToCart.bind(this);
+    this.imageSwitcher = this.imageSwitcher.bind(this);
   }
   componentDidMount() {
     this.fetchProduct();
@@ -47,6 +49,7 @@ export class Details extends Component {
     });
     const product = result.data.product;
     const description = parse(product.description);
+    const activeImage = product.gallery[0];
     this.setState({
       productID: product.id,
       productName: product.name,
@@ -55,6 +58,7 @@ export class Details extends Component {
       description: description,
       prices: product.prices,
       attributes: product.attributes,
+      activeImage,
     });
     // set default active attributes
   }
@@ -80,8 +84,13 @@ export class Details extends Component {
       activeAttr: this.state.active,
       count: 1,
     };
-
+    console.log(product);
     this.props.addToCart(product);
+  }
+
+  imageSwitcher(e) {
+    const activeImage = e.target.src;
+    this.setState({ activeImage: activeImage });
   }
 
   render() {
@@ -89,12 +98,16 @@ export class Details extends Component {
       <div className={styles.container}>
         <div className={styles.gallery}>
           {this.state.gallery.map((img) => {
-            return <img src={img} alt={this.state.productName} key={img} />;
+            return (
+              <button onClick={this.imageSwitcher}>
+                <img src={img} alt={this.state.productName} key={img} />
+              </button>
+            );
           })}
         </div>
         <div className={styles.main}>
           <div className={styles.mainImg}>
-            <img src={this.state.gallery[0]} alt="#" />
+            <img src={this.state.activeImage} alt="#" />
           </div>
           <div className={styles.attributesContainer}>
             <div className={styles.titleContainer}>
