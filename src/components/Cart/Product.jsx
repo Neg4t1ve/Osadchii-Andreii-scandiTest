@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import styles from "./product.module.scss";
-import { withRouter } from "hoc/withRouter";
 import Attributes from "../Details/Attributes/Attributes";
-import AttributesMini from "./Attributes/AttributesMini";
 import { connect } from "react-redux";
 import Divider from "components/Divider/Divider";
 import Plus from "../../assets/img/plusSquare.svg";
 import Minus from "../../assets/img/minusSquare.svg";
+import arrowRight from "../../assets/img/arrowRightSmall.svg";
+import arrowLeft from "../../assets/img/arrowLeftSmall.svg";
 import { decrement, increment } from "app/Slices/cartSlice";
 
 const mapStateToProps = (state) => ({
@@ -24,10 +24,13 @@ export class Product extends Component {
 
     this.state = {
       active: [],
+      thumbIndex: 0,
     };
     this.pickAttribute = this.pickAttribute.bind(this);
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
+    this.swipeLeft = this.swipeLeft.bind(this);
+    this.swipeRight = this.swipeRight.bind(this);
   }
   componentDidMount() {
     this.setState({
@@ -38,11 +41,11 @@ export class Product extends Component {
   }
 
   pickAttribute(e) {
-    const name = e.target.id;
+    const name = e.target.value ? e.target.id : e.target.parentNode.id;
     this.setState({
       active: {
         ...this.state.active,
-        [name]: e.target.value,
+        [name]: e.target.value ? e.target.value : e.target.parentNode.value,
       },
     });
   }
@@ -52,6 +55,24 @@ export class Product extends Component {
   }
   decrement() {
     this.props.decrement(this.props.productId);
+  }
+
+  swipeRight() {
+    if (this.state.thumbIndex === this.props.gallery.length - 1) {
+      this.setState({ thumbIndex: 0 });
+      return;
+    }
+    const index = this.state.thumbIndex + 1;
+    this.setState({ thumbIndex: index });
+  }
+
+  swipeLeft() {
+    if (this.state.thumbIndex === 0) {
+      this.setState({ thumbIndex: this.props.gallery.length - 1 });
+      return;
+    }
+    const index = this.state.thumbIndex - 1;
+    this.setState({ thumbIndex: index });
   }
 
   render() {
@@ -100,19 +121,13 @@ export class Product extends Component {
                 return null;
               })}
             </p>
-            {this.props.isFull ? (
-              <Attributes
-                id={this.state.productID}
-                attributes={this.props.attributes}
-                pickAttribute={this.pickAttribute}
-                activeAttr={this.state.active}
-              />
-            ) : (
-              <AttributesMini
-                id={this.state.productID}
-                attributes={this.props.attributes}
-              />
-            )}
+
+            <Attributes
+              id={this.state.productID}
+              attributes={this.props.attributes}
+              activeAttr={this.state.active}
+              isFull={this.props.isFull}
+            />
           </div>
           <div className={this.props.isFull ? styles.aside : styles.miniAside}>
             <div
@@ -153,8 +168,21 @@ export class Product extends Component {
                 this.props.isFull ? styles.mainImg : styles.miniMainImg
               }
             >
-              <img src={this.props.gallery[0]} alt="#" />
+              <img
+                src={this.props.gallery[this.state.thumbIndex]}
+                alt={this.props.productName}
+              />
             </div>
+            {this.props.isFull && this.props.gallery.length > 1 && (
+              <div className={styles.buttons}>
+                <button className={styles.arrowLeft} onClick={this.swipeLeft}>
+                  <img src={arrowLeft} alt="arrowLeft" />
+                </button>
+                <button className={styles.arrowRight} onClick={this.swipeRight}>
+                  <img src={arrowRight} alt="arrowRight" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
         {this.props.isFull && <Divider />}
@@ -163,7 +191,4 @@ export class Product extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(Product));
+export default connect(mapStateToProps, mapDispatchToProps)(Product);
