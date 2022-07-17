@@ -5,8 +5,8 @@ import { client } from "api/client";
 import { GET_ALL_CATEGORIES } from "api/queries/GET__ALL_CATEGORIES";
 import { setCategory } from "app/Slices/categoriesSlice";
 import { connect } from "react-redux";
+import { withRouter } from "hoc/withRouter";
 
-// достаем метод для установки категории
 const mapDispatchToProps = (dispatch) => ({
   setActiveCategory: (state) => dispatch(setCategory(state)),
 });
@@ -17,7 +17,7 @@ class Categories extends Component {
 
     this.state = {
       categories: [],
-      category: "all",
+      category: this.props.router.params.category || "all",
     };
 
     this.fetchCategories = this.fetchCategories.bind(this);
@@ -25,6 +25,7 @@ class Categories extends Component {
   }
   componentDidMount() {
     this.fetchCategories();
+    this.props.setActiveCategory(this.state.category);
   }
 
   async fetchCategories() {
@@ -66,4 +67,4 @@ class Categories extends Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Categories);
+export default connect(null, mapDispatchToProps)(withRouter(Categories));
