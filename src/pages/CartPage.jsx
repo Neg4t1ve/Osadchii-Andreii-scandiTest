@@ -28,7 +28,9 @@ class CartPage extends Component {
             return (
               <Product
                 productId={item.productId}
-                key={item.productId + item.activeAttr + item.count}
+                key={
+                  item.productId + item.count + JSON.stringify(item.activeAttr)
+                }
                 activeAttr={item.activeAttr}
                 count={item.count}
                 isFull={true}
