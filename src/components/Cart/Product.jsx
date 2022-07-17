@@ -51,10 +51,16 @@ export class Product extends Component {
   }
 
   increment() {
-    this.props.increment(this.props.productId);
+    this.props.increment({
+      id: this.props.productId,
+      activeAttr: this.props.activeAttr,
+    });
   }
   decrement() {
-    this.props.decrement(this.props.productId);
+    this.props.decrement({
+      id: this.props.productId,
+      activeAttr: this.props.activeAttr,
+    });
   }
 
   swipeRight() {
