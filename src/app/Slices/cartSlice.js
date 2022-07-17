@@ -57,16 +57,18 @@ export const cartSlice = createSlice({
         });
 
         const product = { ...action.payload, activeAttr: attr };
-        // increase counter of product, if there was the same
+
+        // cheking for same products in cart
         if (
           state.products
-            .map((item) => compareObjects(item.activeAttr, product.activeAttr))
-            .includes(true) &&
-          state.products.map((i) => i.id).includes(product.id)
+            .map((item) => compareObjects(item, product))
+            .includes(true)
         ) {
           const productIndex = state.products
-            .map((item) => compareObjects(item.activeAttr, product.activeAttr))
+            .map((item) => compareObjects(item, product))
             .findIndex((i) => i === true);
+
+          // increase counter of product, if there was the same
           let count = state.products[productIndex].count;
           count++;
           state.products[productIndex].count = count;
