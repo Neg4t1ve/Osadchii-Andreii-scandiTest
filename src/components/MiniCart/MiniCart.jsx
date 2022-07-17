@@ -22,21 +22,21 @@ class MiniCart extends Component {
   }
 
   toggleCartVisibility() {
-    if (!this.state.visibility) {
-      document.addEventListener("click", this.handleOutsideClick, false);
-    } else {
-      document.removeEventListener("click", this.handleOutsideClick, false);
-    }
+    // if (!this.state.visibility) {
+    //   document.addEventListener("click", this.handleOutsideClick, false);
+    // } else {
+    //   document.removeEventListener("click", this.handleOutsideClick, false);
+    // }
 
     this.setState((prevState) => ({
       visibility: !prevState.visibility,
     }));
   }
-  handleOutsideClick = (e) => {
-    if (!this.node.contains(e.target)) {
-      this.toggleCartVisibility();
-    }
-  };
+  // handleOutsideClick = (e) => {
+  //   if (!this.node.contains(e.target)) {
+  //     this.toggleCartVisibility();
+  //   }
+  // };
 
   render() {
     return (
@@ -74,7 +74,11 @@ class MiniCart extends Component {
                   return (
                     <Product
                       productId={item.productId}
-                      key={item.productId + item.count}
+                      key={
+                        item.productId +
+                        item.count +
+                        JSON.stringify(item.activeAttr)
+                      }
                       activeAttr={item.activeAttr}
                       count={item.count}
                       isFull={false}
