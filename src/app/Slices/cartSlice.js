@@ -104,9 +104,11 @@ export const cartSlice = createSlice({
 
     increment: (state, action) => {
       // searching needed product
-      const productIndex = state.products.findIndex(
-        (item) => item.productId === action.payload
-      );
+      const productIndex = state.products
+        .map((item) =>
+          compareObjects(item.activeAttr, action.payload.activeAttr)
+        )
+        .findIndex((i) => i === true);
 
       // increases total price
       const currentPrice = state.products[productIndex].prices
@@ -135,12 +137,11 @@ export const cartSlice = createSlice({
 
     decrement: (state, action) => {
       // searching needed product
-      const productIndex = state.products.findIndex(
-        (item) => item.productId === action.payload
-      );
-
-      // decreasing quantity counter
-      state.quantity = state.quantity - 1;
+      const productIndex = state.products
+        .map((item) =>
+          compareObjects(item.activeAttr, action.payload.activeAttr)
+        )
+        .findIndex((i) => i === true);
 
       // decreasing total price
       const currentPrice = state.products[productIndex].prices
@@ -152,27 +153,26 @@ export const cartSlice = createSlice({
         })
         .filter((item) => !!item)
         .join("");
+
       let sum = state.total - +currentPrice;
       let tax = (sum * 21) / 100;
       state.total = +sum.toFixed(2);
       state.tax = +tax.toFixed(2);
 
-      // set tax
-
       // delete product if user try to decrase the counter, when it equal to 1
       if (state.products[productIndex].count === 1) {
         state.products.splice(productIndex, 1);
+        // decreasing quantity counter
+        state.quantity = state.quantity - 1;
         return;
       }
 
       // decrasing counter if it > 1
-      state.products.forEach((item) => {
-        if (item.productId === action.payload && item.count > 1) {
-          let count = state.products[productIndex].count;
-          count--;
-          state.products[productIndex].count = count--;
-        }
-      });
+      let count = state.products[productIndex].count;
+      count--;
+      state.products[productIndex].count = count--;
+      // decreasing quantity counter
+      state.quantity = state.quantity - 1;
     },
   },
 });
