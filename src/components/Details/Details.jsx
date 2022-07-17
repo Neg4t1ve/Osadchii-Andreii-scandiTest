@@ -64,11 +64,11 @@ export class Details extends Component {
   }
   pickAttribute(e) {
     // pick active attribute and put it into state
-    const name = e.target.id;
+    const name = e.target.value ? e.target.id : e.target.parentNode.id;
     this.setState({
       active: {
         ...this.state.active,
-        [name]: e.target.value,
+        [name]: e.target.value ? e.target.value : e.target.parentNode.value,
       },
     });
   }
@@ -84,7 +84,6 @@ export class Details extends Component {
       activeAttr: this.state.active,
       count: 1,
     };
-    console.log(product);
     this.props.addToCart(product);
   }
 
@@ -99,7 +98,7 @@ export class Details extends Component {
         <div className={styles.gallery}>
           {this.state.gallery.map((img) => {
             return (
-              <button onClick={this.imageSwitcher}>
+              <button onClick={this.imageSwitcher} key={img}>
                 <img src={img} alt={this.state.productName} key={img} />
               </button>
             );
@@ -120,6 +119,7 @@ export class Details extends Component {
               attributes={this.state.attributes}
               pickAttribute={this.pickAttribute}
               activeAttr={this.state.active}
+              isFull={true}
             />
 
             <div className={styles.priceContainer}>
