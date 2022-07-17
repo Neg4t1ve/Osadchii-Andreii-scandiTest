@@ -102,6 +102,7 @@ export const cartSlice = createSlice({
       state.products.push(action.payload);
     },
 
+    // increases counter of product
     increment: (state, action) => {
       // searching needed product
       const productIndex = state.products
@@ -135,6 +136,7 @@ export const cartSlice = createSlice({
       state.quantity = state.quantity + 1;
     },
 
+    // decreases counter of product
     decrement: (state, action) => {
       // searching needed product
       const productIndex = state.products
@@ -174,10 +176,32 @@ export const cartSlice = createSlice({
       // decreasing quantity counter
       state.quantity = state.quantity - 1;
     },
+
+    // calcute price when user switch currency
+    calculateTotalPrice: (state) => {
+      const total = state.products.reduce((prev, curr) => {
+        const currentPrice = curr.prices
+          .map((item) => {
+            if (item.currency.symbol === state.activeCurrency) {
+              return item.amount;
+            }
+            return null;
+          })
+          .filter((item) => !!item)
+          .join("");
+        return prev + +currentPrice;
+      }, 0);
+      state.total = total;
+    },
   },
 });
 
-export const { addToCart, increment, decrement, setCurrency } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  increment,
+  decrement,
+  setCurrency,
+  calculateTotalPrice,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
