@@ -39,6 +39,7 @@ class ProductListingPage extends Component {
         title: this.props.category,
       },
     });
+
     this.setState({ products: result.data.category.products });
   }
 
@@ -47,6 +48,7 @@ class ProductListingPage extends Component {
       <Main>
         <div className={styles.container}>
           <h2 className={styles.title}>{this.props.category.toUpperCase()}</h2>
+
           <div className={styles.grid}>
             {this.state.products.map((product) => {
               return (
