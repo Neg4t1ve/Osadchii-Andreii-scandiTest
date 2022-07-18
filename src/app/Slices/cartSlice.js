@@ -189,9 +189,9 @@ export const cartSlice = createSlice({
           })
           .filter((item) => !!item)
           .join("");
-        return prev + +currentPrice;
+        return prev + +currentPrice * curr.count;
       }, 0);
-      state.total = total;
+      state.total = total.toFixed(2);
     },
   },
 });
