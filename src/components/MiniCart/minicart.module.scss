@@ -46,6 +46,25 @@
     .basketContainer {
       display: flex;
       flex-direction: column;
+      .title {
+        align-self: flex-start;
+        margin-bottom: 2rem;
+        font-weight: 700;
+        text-transform: capitalize;
+        span {
+          font-weight: 500;
+        }
+      }
+      .total {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 5.5rem;
+        @include font($Roboto, 500);
+        span {
+          font-weight: 700;
+        }
+      }
       .placeholder {
         margin: 14.5rem auto;
         font-size: 1.5rem;
@@ -58,9 +77,15 @@
       opacity: 0;
     }
     .buttonsContainer {
+      position: fixed;
+      padding: 2rem 1rem;
+      bottom: 17.44%;
+      right: 2.5%;
       display: flex;
       flex-direction: row;
+      justify-content: center;
       gap: 0.75rem;
+      background-color: #fff;
       .link {
         @include font($Raleway, 600);
         font-size: 0.875rem;

@@ -9,6 +9,7 @@ const mapStateToProps = (state) => ({
   cart: state.cart.products,
   currency: state.cart.activeCurrency,
   quantity: state.cart.quantity,
+  total: state.cart.total,
 });
 
 class MiniCart extends Component {
@@ -66,47 +67,58 @@ class MiniCart extends Component {
         {this.state.visibility > 0 && (
           <div className={styles.basket}>
             <div className={styles.basketContainer}>
+              <p className={styles.title}>
+                My Bag, <span>{this.props.quantity} items</span>
+              </p>
               {this.props.quantity === 0 && (
                 <p className={styles.placeholder}>Cart is empty</p>
               )}
-              {this.props.cart &&
-                this.props.cart.map((item) => {
-                  return (
-                    <Product
-                      productId={item.productId}
-                      key={
-                        item.productId +
-                        item.count +
-                        JSON.stringify(item.activeAttr)
-                      }
-                      activeAttr={item.activeAttr}
-                      count={item.count}
-                      isFull={false}
-                      productName={item.productName}
-                      brand={item.brand}
-                      gallery={item.gallery}
-                      prices={item.prices}
-                      attributes={item.attributes}
-                    />
-                  );
-                })}
-            </div>
-            <div className={styles.buttonsContainer}>
-              {" "}
-              <Link
-                onClick={this.toggleCartVisibility}
-                to="/cart"
-                className={styles.link}
-              >
-                VIEW BAG
-              </Link>
-              <Link
-                onClick={this.toggleCartVisibility}
-                to="/cart"
-                className={styles.button}
-              >
-                CHECK OUT
-              </Link>
+              <div className={styles.products}>
+                {this.props.cart &&
+                  this.props.cart.map((item) => {
+                    return (
+                      <Product
+                        productId={item.productId}
+                        key={
+                          item.productId +
+                          item.count +
+                          JSON.stringify(item.activeAttr)
+                        }
+                        activeAttr={item.activeAttr}
+                        count={item.count}
+                        isFull={false}
+                        productName={item.productName}
+                        brand={item.brand}
+                        gallery={item.gallery}
+                        prices={item.prices}
+                        attributes={item.attributes}
+                      />
+                    );
+                  })}
+              </div>
+              <div className={styles.total}>
+                <p>Total</p>
+                <span>
+                  {this.props.currency}
+                  {this.props.total}
+                </span>
+              </div>
+              <div className={styles.buttonsContainer}>
+                <Link
+                  onClick={this.toggleCartVisibility}
+                  to="/cart"
+                  className={styles.link}
+                >
+                  VIEW BAG
+                </Link>
+                <Link
+                  onClick={this.toggleCartVisibility}
+                  to="/cart"
+                  className={styles.button}
+                >
+                  CHECK OUT
+                </Link>
+              </div>
             </div>
           </div>
         )}
