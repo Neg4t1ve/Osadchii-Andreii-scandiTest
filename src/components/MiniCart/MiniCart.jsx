@@ -66,10 +66,10 @@ class MiniCart extends Component {
 
         {this.state.visibility > 0 && (
           <div className={styles.basket}>
+            <p className={styles.title}>
+              My Bag, <span>{this.props.quantity} items</span>
+            </p>
             <div className={styles.basketContainer}>
-              <p className={styles.title}>
-                My Bag, <span>{this.props.quantity} items</span>
-              </p>
               {this.props.quantity === 0 && (
                 <p className={styles.placeholder}>Cart is empty</p>
               )}
@@ -96,28 +96,30 @@ class MiniCart extends Component {
                     );
                   })}
               </div>
-              <div className={styles.total}>
-                <p>Total</p>
-                <span>
-                  {this.props.currency}
-                  {this.props.total}
-                </span>
-              </div>
-              <div className={styles.buttonsContainer}>
-                <Link
-                  onClick={this.toggleCartVisibility}
-                  to="/cart"
-                  className={styles.link}
-                >
-                  VIEW BAG
-                </Link>
-                <Link
-                  onClick={this.toggleCartVisibility}
-                  to="/cart"
-                  className={styles.button}
-                >
-                  CHECK OUT
-                </Link>
+              <div className={styles.footer}>
+                <div className={styles.total}>
+                  <p>Total</p>
+                  <span>
+                    {this.props.currency}
+                    {this.props.total}
+                  </span>
+                </div>
+                <div className={styles.buttonsContainer}>
+                  <Link
+                    onClick={this.toggleCartVisibility}
+                    to="/cart"
+                    className={styles.link}
+                  >
+                    VIEW BAG
+                  </Link>
+                  <Link
+                    onClick={this.toggleCartVisibility}
+                    to="/cart"
+                    className={styles.button}
+                  >
+                    CHECK OUT
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
