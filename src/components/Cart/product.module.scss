@@ -90,10 +90,12 @@
 .miniContainer {
   display: flex;
   flex-direction: row;
+  width: 18.2rem;
   justify-content: space-between;
   .miniAttributesContainer {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 1.25rem;
     align-items: flex-start;
     .miniTitleContainer {
