@@ -72,19 +72,18 @@
         cursor: pointer;
       }
       .miniButton {
-        // padding: 0 0.625rem;
-        width: 1.5rem;
-        height: 1.5rem;
         background-color: #fff;
         border: $color-text solid 1px;
         @include font($Sans, 400);
         font-size: 0.875rem;
         line-height: 1.4rem;
         text-transform: uppercase;
+        padding: 0.125rem 0.25rem;
         &Active {
           @extend .button;
           background-color: $color-text;
           color: #fff;
+          padding: 0.125rem 0.25rem;
         }
       }
 
