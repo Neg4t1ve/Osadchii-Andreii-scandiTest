@@ -1,6 +1,6 @@
 import { client } from "api/client";
 import { GET_CURRENCIES } from "api/queries/GET_CURRENCIES";
-import { calculateTotalPrice, setCurrency } from "app/Slices/cartSlice";
+import { setCurrency } from "app/Slices/cartSlice";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import arrow from "../../../assets/img/down-arrow.svg";
@@ -12,7 +12,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setCurrency: (state) => dispatch(setCurrency(state)),
-  calculateTotal: (state) => dispatch(calculateTotalPrice(state)),
 });
 
 class CurrencySwitcher extends Component {
@@ -22,13 +21,13 @@ class CurrencySwitcher extends Component {
     this.state = {
       visibility: false,
       currencies: [],
-      activeCurrency: this.props.currency,
     };
 
     this.toggleSwitcherVisibility = this.toggleSwitcherVisibility.bind(this);
     this.currencySwitch = this.currencySwitch.bind(this);
     this.fetchCurrencies = this.fetchCurrencies.bind(this);
   }
+
   componentDidMount() {
     this.fetchCurrencies();
   }
@@ -50,10 +49,10 @@ class CurrencySwitcher extends Component {
   };
 
   currencySwitch(symbol) {
+    // set active currency to global state
     this.props.setCurrency(symbol);
-    this.props.calculateTotal();
+
     this.toggleSwitcherVisibility();
-    this.setState({ activeCurrency: symbol });
   }
 
   async fetchCurrencies() {
@@ -79,8 +78,7 @@ class CurrencySwitcher extends Component {
               : styles.currencySwitcher
           }
         >
-          <span>{this.state.activeCurrency}</span>{" "}
-          <img src={arrow} alt="arrow" />
+          <span>{this.props.currency}</span> <img src={arrow} alt="arrow" />
         </button>
 
         <div className={styles.container}>

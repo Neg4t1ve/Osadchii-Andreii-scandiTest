@@ -1,6 +1,8 @@
 import { compareObjects } from "helpers/compareObjects";
 
-const { createSlice } = require("@reduxjs/toolkit");
+import { createSlice } from "@reduxjs/toolkit";
+import { findIndex } from "helpers/findIndex";
+import { takeCurrentPrice } from "helpers/takeCurrentPrice";
 
 export const cartSlice = createSlice({
   name: "cart",
@@ -26,7 +28,18 @@ export const cartSlice = createSlice({
 
   reducers: {
     setCurrency: (state, action) => {
+      if (state.activeCurrency === action.payload) return;
       state.activeCurrency = action.payload;
+
+      // calculating total price of products, when currency change
+      const total = state.products.reduce((prev, curr) => {
+        const currentPrice = takeCurrentPrice(
+          state.activeCurrency,
+          curr.prices
+        );
+        return prev + +currentPrice * curr.count;
+      }, 0);
+      state.total = total.toFixed(2);
     },
 
     addToCart: (state, action) => {
@@ -34,17 +47,12 @@ export const cartSlice = createSlice({
       state.quantity = state.quantity + 1;
 
       // increases total price
-      const currentPrice = action.payload.prices
-        .map((item) => {
-          if (item.currency.symbol === state.activeCurrency) {
-            return item.amount;
-          }
-          return null;
-        })
-        .filter((item) => !!item)
-        .join("");
+      const currentPrice = takeCurrentPrice(
+        state.activeCurrency,
+        action.payload.prices
+      );
 
-      let sum = state.total + +currentPrice;
+      let sum = state.total + currentPrice;
       let tax = (sum * 21) / 100;
       state.total = +sum.toFixed(2);
       state.tax = +tax.toFixed(2);
@@ -65,9 +73,7 @@ export const cartSlice = createSlice({
             .includes(true) &&
           state.products.map((i) => i.id).includes(product.id)
         ) {
-          const productIndex = state.products
-            .map((item) => compareObjects(item.activeAttr, product.activeAttr))
-            .findIndex((i) => i === true);
+          const productIndex = findIndex(state, product);
           let count = state.products[productIndex].count;
           count++;
           state.products[productIndex].count = count;
@@ -87,42 +93,29 @@ export const cartSlice = createSlice({
           .includes(true) &&
         state.products.map((i) => i.id).includes(action.payload.id)
       ) {
-        const productIndex = state.products
-          .map((item) =>
-            compareObjects(item.activeAttr, action.payload.activeAttr)
-          )
-          .findIndex((i) => i === true);
+        const productIndex = findIndex(state, action.payload);
         let count = state.products[productIndex].count;
         count++;
         state.products[productIndex].count = count;
         return;
       }
 
-      // add new product to a cart, if
+      // add new product to a cart
       state.products.push(action.payload);
     },
 
     // increases counter of product
     increment: (state, action) => {
       // searching needed product
-      const productIndex = state.products
-        .map((item) =>
-          compareObjects(item.activeAttr, action.payload.activeAttr)
-        )
-        .findIndex((i) => i === true);
+      const productIndex = findIndex(state, action.payload);
 
       // increases total price
-      const currentPrice = state.products[productIndex].prices
-        .map((item) => {
-          if (item.currency.symbol === state.activeCurrency) {
-            return item.amount;
-          }
-          return null;
-        })
-        .filter((item) => !!item)
-        .join("");
+      const currentPrice = takeCurrentPrice(
+        state.activeCurrency,
+        state.products[productIndex].prices
+      );
 
-      let sum = state.total + +currentPrice;
+      let sum = state.total + currentPrice;
       let tax = (sum * 21) / 100;
       state.total = +sum.toFixed(2);
       state.tax = +tax.toFixed(2);
@@ -139,24 +132,15 @@ export const cartSlice = createSlice({
     // decreases counter of product
     decrement: (state, action) => {
       // searching needed product
-      const productIndex = state.products
-        .map((item) =>
-          compareObjects(item.activeAttr, action.payload.activeAttr)
-        )
-        .findIndex((i) => i === true);
+      const productIndex = findIndex(state, action.payload);
 
       // decreasing total price
-      const currentPrice = state.products[productIndex].prices
-        .map((item) => {
-          if (item.currency.symbol === state.activeCurrency) {
-            return item.amount;
-          }
-          return null;
-        })
-        .filter((item) => !!item)
-        .join("");
+      const currentPrice = takeCurrentPrice(
+        state.activeCurrency,
+        state.products[productIndex].prices
+      );
 
-      let sum = state.total - +currentPrice;
+      let sum = state.total - currentPrice;
       let tax = (sum * 21) / 100;
       state.total = +sum.toFixed(2);
       state.tax = +tax.toFixed(2);
@@ -176,32 +160,10 @@ export const cartSlice = createSlice({
       // decreasing quantity counter
       state.quantity = state.quantity - 1;
     },
-
-    // calcute price when user switch currency
-    calculateTotalPrice: (state) => {
-      const total = state.products.reduce((prev, curr) => {
-        const currentPrice = curr.prices
-          .map((item) => {
-            if (item.currency.symbol === state.activeCurrency) {
-              return item.amount;
-            }
-            return null;
-          })
-          .filter((item) => !!item)
-          .join("");
-        return prev + +currentPrice * curr.count;
-      }, 0);
-      state.total = total.toFixed(2);
-    },
   },
 });
 
-export const {
-  addToCart,
-  increment,
-  decrement,
-  setCurrency,
-  calculateTotalPrice,
-} = cartSlice.actions;
+export const { addToCart, increment, decrement, setCurrency } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;

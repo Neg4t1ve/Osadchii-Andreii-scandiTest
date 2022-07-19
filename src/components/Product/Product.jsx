@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styles from "./product.module.scss";
-import Attributes from "../Details/Attributes/Attributes";
+import Attributes from "../Attributes/Attributes";
 import { connect } from "react-redux";
 import Divider from "components/Divider/Divider";
 import Plus from "../../assets/img/plusSquare.svg";

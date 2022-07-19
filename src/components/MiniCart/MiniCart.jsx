@@ -1,4 +1,4 @@
-import Product from "components/Cart/Product";
+import Product from "components/Product/Product";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -23,30 +23,14 @@ class MiniCart extends Component {
   }
 
   toggleCartVisibility() {
-    // if (!this.state.visibility) {
-    //   document.addEventListener("click", this.handleOutsideClick, false);
-    // } else {
-    //   document.removeEventListener("click", this.handleOutsideClick, false);
-    // }
-
     this.setState((prevState) => ({
       visibility: !prevState.visibility,
     }));
   }
-  // handleOutsideClick = (e) => {
-  //   if (!this.node.contains(e.target)) {
-  //     this.toggleCartVisibility();
-  //   }
-  // };
 
   render() {
     return (
-      <div
-        className={styles.miniCartContainer}
-        ref={(node) => {
-          this.node = node;
-        }}
-      >
+      <div className={styles.miniCartContainer}>
         <button
           className={styles.miniCartSwitcher}
           onClick={this.toggleCartVisibility}
@@ -64,7 +48,7 @@ class MiniCart extends Component {
           />
         )}
 
-        {this.state.visibility > 0 && (
+        {this.state.visibility && (
           <div className={styles.basket}>
             <p className={styles.title}>
               My Bag, <span>{this.props.quantity} items</span>

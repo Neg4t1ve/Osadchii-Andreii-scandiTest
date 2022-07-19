@@ -1,5 +1,4 @@
-import Button from "components/Button/Button";
-import Product from "components/Cart/Product";
+import Product from "components/Product/Product";
 import Divider from "components/Divider/Divider";
 import Main from "components/Main/Main";
 import React, { Component } from "react";
@@ -57,9 +56,9 @@ class CartPage extends Component {
               {this.props.total}
             </span>
           </div>
-          <Button style={styles.button} handleClick={this.handleOrder}>
+          <button className={styles.button} onClick={this.handleOrder}>
             ORDER
-          </Button>
+          </button>
         </div>
       </Main>
     );

@@ -23,6 +23,7 @@ class Categories extends Component {
     this.fetchCategories = this.fetchCategories.bind(this);
     this.setCategory = this.setCategory.bind(this);
   }
+
   componentDidMount() {
     this.fetchCategories();
     this.props.setActiveCategory(this.state.category);
@@ -32,6 +33,7 @@ class Categories extends Component {
     const result = await client.query({
       query: GET_ALL_CATEGORIES,
     });
+
     this.setState({
       categories: result.data.categories,
     });

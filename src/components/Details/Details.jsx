@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import styles from "./details.module.scss";
-import Button from "../Button/Button";
 import { withRouter } from "hoc/withRouter";
 import { client } from "api/client";
 import { GET_PRODUCT_BY_ID } from "api/queries/GET_PRODUCT_BY_ID";
 import parse from "html-react-parser";
-import Attributes from "./Attributes/Attributes";
+import Attributes from "../Attributes/Attributes";
 import { connect } from "react-redux";
 import { addToCart } from "app/Slices/cartSlice";
 
@@ -134,10 +133,9 @@ export class Details extends Component {
                 })}
               </p>
             </div>
-            <Button style={styles.button} handleClick={this.addToCart}>
-              {" "}
-              Add to cart{" "}
-            </Button>
+            <button className={styles.button} onClick={this.addToCart}>
+              Add to cart
+            </button>
             <div className={styles.description}>{this.state.description}</div>
           </div>
         </div>
